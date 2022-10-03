@@ -1,15 +1,21 @@
+const path = require('path');
+
 const express = require('express');
+
+const rootDir = require('./util/path');
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 
 const app = express();
 
-app.use('/add-product', (req, res, next) => {
-  console.log('In product middleware');
-  res.send('<h1>The "Add Product" Page</h1>');
-});
+app.use(express.urlencoded({extended: true}));
+app.use(express.static(path.join(rootDir, 'public')));
 
-app.use('/', (req, res, next) => {
-  console.log('In home middleware');
-  res.send('<h1>Hello from express!</h1>');
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
+
+app.use((_, res, next) => {
+  res.status(404).sendFile(path.join(rootDir, 'views', 'not-found.html'));
 });
 
 app.listen(3000);
