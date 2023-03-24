@@ -1,0 +1,44 @@
+form.auth-form {
+  display: block;
+  width: 90%;
+  max-width: 24rem;
+  margin: 0 auto;
+}
+
+.form-control {
+  margin: 1em 0;
+}
+
+.form-control :where(label, input, textarea) {
+  width: 100%;
+  display: block;
+  margin: 0.5em 0;
+}
+
+.form-control :where(input, textarea) {
+  padding: 0.3em 0.6em;
+  border: 1px solid #00695c;
+  font: inherit;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  border-radius: 3px;
+}
+
+.form-control :where(input, textarea):focus {
+  outline-color: #00695c;
+}
+
+button {
+  padding: 0.3em 0.6em;
+  font: inherit;
+  border: 1px solid #00695c;
+  color: #00695c;
+  background: white;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 200ms ease-in-out;
+}
+
+button:where(:hover, :active) {
+  background-color: #00695c;
+  color: #fff;
+}

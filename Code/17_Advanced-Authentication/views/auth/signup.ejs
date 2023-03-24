@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../components/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css" />
+</head>
+<body>
+    <%- include('../components/nav.ejs') %>
+    <main>
+        <% if (errorMessage) { %>
+            <p class="user-message error-message"><%= errorMessage %></p>
+        <% } %>
+        <form action="/signup" method="POST" class="auth-form">
+            <p class="form-control">
+                <label for="email">E-Mail</label>
+                <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    dir="auto"
+                />
+            </p>
+            <p class="form-control">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    dir="auto"
+                />
+            </p>
+            <p class="form-control">
+                <label for="confirmPassword">Confirm Password</label>
+                <input
+                    type="password"
+                    name="confirmPassword"
+                    id="confirmPassword"
+                    dir="auto"
+                />
+            </p>
+            <button type="submit">Signup</button>
+        </form>
+    </main>
+    <script src="/js/main.js"></script>
+</body>
+</html>
