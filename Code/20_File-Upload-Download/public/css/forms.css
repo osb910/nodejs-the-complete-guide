@@ -1,0 +1,66 @@
+form.auth-form {
+  display: block;
+  width: 90%;
+  max-width: 24rem;
+  margin: 0 auto;
+}
+
+.form-control {
+  margin: 1em 0;
+}
+
+.form-control :where(label, input, textarea) {
+  width: 100%;
+  display: block;
+  margin: 0.5em 0;
+}
+
+.form-control :where(input, textarea) {
+  padding: 0.3em 0.6em;
+  border: 1px solid #00695c;
+  font: inherit;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  border-radius: 3px;
+}
+
+.form-control :where(input, textarea):focus {
+  outline-color: #00695c;
+}
+
+.form-control .invalid {
+  border-color: #f44336;
+  background-color: #ffebee;
+  color: #f44336;
+}
+
+input[type=file] {
+  content: 'Upload File';
+  cursor: pointer;
+  text-align: center;
+  padding: 0.5em;
+}
+
+input[type=file]::file-selector-button {
+  font-weight: bold;
+  color: #00695c;
+  padding: 0.2em 0.4em;
+  border: thin solid #6c5ce7;
+  border-radius: 0.2em;
+  cursor: pointer;
+}
+
+button {
+  padding: 0.3em 0.6em;
+  font: inherit;
+  border: 1px solid #00695c;
+  color: #00695c;
+  background: white;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 200ms ease-in-out;
+}
+
+button:where(:hover, :active) {
+  background-color: #00695c;
+  color: #fff;
+}
