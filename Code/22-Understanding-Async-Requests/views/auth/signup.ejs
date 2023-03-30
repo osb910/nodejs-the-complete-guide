@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../components/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css" />
+</head>
+<body>
+    <%- include('../components/nav.ejs') %>
+    <main>
+        <% if (errorMessage) { %>
+            <p class="user-message error-message"><%= errorMessage %></p>
+        <% } %>
+        <form action="/signup" method="POST" class="auth-form">
+            <p class="form-control">
+                <label for="email">E-Mail</label>
+                <input
+                    class="<%= validationErrors.some(err => err.param === 'email') ? 'invalid' : '' %>"
+                    type="email"
+                    name="email"
+                    id="email"
+                    dir="auto"
+                    <% if (oldInput) { %> value="<%= oldInput.email %>" <% } %>
+                />
+            </p>
+            <p class="form-control">
+                <label for="password">Password</label>
+                <input
+                    class="<%= validationErrors.some(err => err.param === 'password') ? 'invalid' : '' %>"
+                    type="password"
+                    name="password"
+                    id="password"
+                    dir="auto"
+                    <% if (oldInput) { %> value="<%= oldInput.password %>" <% } %>
+                />
+            </p>
+            <p class="form-control">
+                <label for="confirmPassword">Confirm Password</label>
+                <input
+                    class="<%= validationErrors.some(err => err.param === 'confirmPassword') ? 'invalid' : '' %>"
+                    type="password"
+                    name="confirmPassword"
+                    id="confirmPassword"
+                    dir="auto"
+                    <% if (oldInput) { %> value="<%= oldInput.confirmPassword %>" <% } %>
+                />
+            </p>
+            <button type="submit">Signup</button>
+        </form>
+    </main>
+    <script src="/js/main.js"></script>
+</body>
+</html>

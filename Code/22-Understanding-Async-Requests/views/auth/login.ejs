@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../components/head.ejs') %>
+        <link rel="stylesheet" href="/css/forms.css" />
+    </head>
+    <body>
+        <%- include('../components/nav.ejs') %>
+        <main>
+            <% if (errorMessage) { %>
+                <p class="user-message error-message"><%= errorMessage %></p>
+            <% } %>
+            <form action="/login" method="POST" class="auth-form">
+                <p class="form-control">
+                    <label for="email">E-Mail</label>
+                    <input
+                        class="<%= validationErrors.some(err => err.param === 'email') ? 'invalid' : '' %>"
+                        type="email"
+                        name="email"
+                        id="email"
+                        dir="auto"
+                        <% if (oldInput) { %> value="<%= oldInput.email %>" <% } %>
+                    />
+                </p>
+                <p class="form-control">
+                    <label for="password">Password</label>
+                    <input
+                        class="<%= validationErrors.some(err => err.param === 'password') ? 'invalid' : '' %>"
+                        type="password"
+                        name="password"
+                        id="password"
+                        dir="auto"
+                        <% if (oldInput) { %> value="<%= oldInput.email %>" <% } %>
+                    />
+                </p>
+                <button type="submit">Login</button>
+                <p class="centered">
+                    <a href="/reset">Reset Password</a>
+                </p>
+            </form>
+        </main>
+        <script src="/js/main.js"></script>
+    </body>
+</html>
