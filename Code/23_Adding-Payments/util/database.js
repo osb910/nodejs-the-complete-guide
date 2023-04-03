@@ -1,4 +1,5 @@
-import {connect} from 'mongoose';
+import mongoose from 'mongoose';
+const {connect} = mongoose;
 
 let _db;
 const mongoUri = `mongodb+srv://${process.env.MONGODB_NAME}:${process.env.MONGODB_PASSWORD}@cluster0.l774dlz.mongodb.net/shop?retryWrites=true&w=majority`;

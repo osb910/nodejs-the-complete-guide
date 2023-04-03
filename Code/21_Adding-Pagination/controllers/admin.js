@@ -131,11 +131,14 @@ const postEditProduct = async (req, res, next) => {
 };
 
 const postDeleteProduct = async (req, res, next) => {
+  console.log('postDeleteProduct fires');
   const {prodId} = req.body;
+  console.log({prodId});
   try {
     const allUsers = await User.find();
     for (const user of allUsers) {
       const removalResult = await user.removeFromCart(prodId);
+      console.log({removalResult});
     }
     const removedDoc = await Product.findOneAndRemove({_id: prodId, userId: req.user._id});
     if (!removedDoc) return next(new Error('Product not found'));

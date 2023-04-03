@@ -46,6 +46,7 @@ app.set('views', 'views'); // default
 app.use(helmet());
 app.use(express.urlencoded({extended: true}));
 app.use(multer({storage: fileStorage, fileFilter}).single('imageFile'));
+console.log(path.join(rootDir, 'public'));
 app.use(express.static(path.join(rootDir, 'public')));
 app.use('/data/images', express.static(path.join(rootDir, 'data', 'images')));
 
