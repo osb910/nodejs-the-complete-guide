@@ -1,16 +1,19 @@
 import {getValidationErrors} from '../../utils/validation-errors.js';
 import Post from '../post/post.model.js';
-const getPosts = (req, res, next) => {
-    res.status(200).json({
-        posts: [{
-            _id: '1',
-            title: 'First Post',
-            content: 'This is the first post!',
-            imageUrl: 'images/duck.webp',
-            creator: {name: 'Max'},
-            createdAt: new Date()
-        }]
-    });
+const getPosts = async (req, res, next) => {
+    try {
+        const posts = await Post.find();
+        console.log({posts});
+        if (!posts) {
+            const error = new Error('Could not find posts.');
+            error.statusCode = 404;
+            throw error;
+        }
+        return res.status(200).json({message: 'Fetched posts!', posts});
+    } catch (err) {
+        if (!err.statusCode) (err.statusCode = 500);
+        next(err);
+    }
 };
 
 const createPost = async (req, res, next) => {
@@ -23,9 +26,7 @@ const createPost = async (req, res, next) => {
     }
     const {title, content} = req.body;
     // Create post in db
-    const post = new Post({title, content, imageUrl: 'images/duck.webp',
-        // creator: req.userId,
-    });
+    const post = new Post({title, content, imageUrl: 'images/duck.webp', creator: {name: 'Omar'}});
     try {
         const result = await post.save();
         res.status(201).json({
@@ -37,4 +38,20 @@ const createPost = async (req, res, next) => {
     }
 };
 
-export {getPosts, createPost};
+const getPost = async (req, res, next) => {
+    const {postId} = req.params;
+    try {
+        const post = await Post.findById(postId);
+        if (!post) {
+            const error = new Error('Could not find post.');
+            error.statusCode = 404;
+            throw error;
+        }
+        res.status(200).json({message: 'Post fetched.', post});
+    } catch (err) {
+        if (!err.statusCode) (err.statusCode = 500);
+        next(err);
+    }
+};
+
+export {getPosts, createPost, getPost};
