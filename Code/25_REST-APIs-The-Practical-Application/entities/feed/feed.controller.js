@@ -3,7 +3,6 @@ import Post from '../post/post.model.js';
 const getPosts = async (req, res, next) => {
     try {
         const posts = await Post.find();
-        console.log({posts});
         if (!posts) {
             const error = new Error('Could not find posts.');
             error.statusCode = 404;
@@ -18,20 +17,20 @@ const getPosts = async (req, res, next) => {
 
 const createPost = async (req, res, next) => {
     const {invalid, errors} = getValidationErrors(req);
-    const message = invalid ? 'Validation failed, entered data is incorrect.' : 'Post created successfully!';
-    if (invalid) {
+    let message = invalid ? 'Validation failed, entered data is incorrect.'
+        : !req.file ? 'No image provided.'
+        : 'Post created successfully!';
+    if (invalid || !req.file) {
         const error = new Error(message);
         error.statusCode = 422;
         throw error;
     }
     const {title, content} = req.body;
-    // Create post in db
-    const post = new Post({title, content, imageUrl: 'images/duck.webp', creator: {name: 'Omar'}});
+    const imageUrl = req.file.path;
+    const post = new Post({title, content, imageUrl, creator: {name: 'Omar'}});
     try {
         const result = await post.save();
-        res.status(201).json({
-            message, post: result
-        });
+        res.status(201).json({message, post: result});
     } catch (err) {
         if (!err.statusCode) (err.statusCode = 500);
         next(err);

@@ -105,7 +105,11 @@ class Feed extends Component {
     this.setState({
       editLoading: true
     });
-    // Set up data (with image!)
+    const formData = new FormData();
+    formData.append('title', postData.title);
+    formData.append('content', postData.content);
+    formData.append('image', postData.image);
+    console.log(postData);
     let url = 'http://localhost:8080/feed/post';
     if (this.state.editPost) {
       url = 'URL';
@@ -113,13 +117,9 @@ class Feed extends Component {
 
     fetch(url, {
         method: 'POST',
-        body: JSON.stringify({
-          title: postData.title,
-          content: postData.content
-        }),
+        body: formData,
         headers: {
           // Authorization: 'Bearer ' + this.props.token,
-          'Content-Type': 'application/json'
         },
     })
       .then(res => {
