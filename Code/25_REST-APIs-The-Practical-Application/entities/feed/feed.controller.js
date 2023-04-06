@@ -4,21 +4,6 @@ import {deleteFile} from "../../utils/file.js";
 import path from "path";
 import rootDir from "../../utils/path.js";
 
-const getPosts = async (req, res, next) => {
-    try {
-        const posts = await Post.find();
-        if (!posts) {
-            const error = new Error('Could not find posts.');
-            error.statusCode = 404;
-            throw error;
-        }
-        return res.status(200).json({message: 'Fetched posts!', posts});
-    } catch (err) {
-        if (!err.statusCode) (err.statusCode = 500);
-        next(err);
-    }
-};
-
 const createPost = async (req, res, next) => {
     const {invalid, errors} = getValidationErrors(req);
     let message = invalid ? 'Validation failed, entered data is incorrect.'
@@ -51,6 +36,24 @@ const getPost = async (req, res, next) => {
             throw error;
         }
         res.status(200).json({message: 'Post fetched.', post});
+    } catch (err) {
+        if (!err.statusCode) (err.statusCode = 500);
+        next(err);
+    }
+};
+
+const getPosts = async (req, res, next) => {
+    const {page} = req.query || 1;
+    const perPage = 2;
+    try {
+        const totalItems = await Post.find().countDocuments();
+        const posts = await Post.find().skip((page - 1) * perPage).limit(perPage);
+        if (!posts) {
+            const error = new Error('Could not find posts.');
+            error.statusCode = 404;
+            throw error;
+        }
+        return res.status(200).json({message: 'Fetched posts!', posts, totalItems});
     } catch (err) {
         if (!err.statusCode) (err.statusCode = 500);
         next(err);
@@ -100,7 +103,7 @@ const deletePost = async (req, res, next) => {
             throw error;
         }
         // Check logged in user
-        
+
         deleteFile(path.join(rootDir(), post.imageUrl));
         const deletedPost = await Post.findByIdAndRemove(postId);
         res.status(200).json({message: 'Deleted post.', post: deletedPost});

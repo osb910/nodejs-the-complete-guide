@@ -11,7 +11,7 @@ import {imgUploadMiddleware, filePathMiddleware} from './middleware/file.middlew
 import {serverError} from './middleware/error.middleware.js';
 import {mongoUri, mongoConnect} from './utils/database.js';
 import feedRoutes from './entities/feed/feed.routes.js';
-
+import authRoutes from './entities/user/auth.routes.js';
 
 const app = express();
 
@@ -27,8 +27,6 @@ app.use(imgUploadMiddleware);
 
 app.use(filePathMiddleware);
 
-
-//
 // app.use(async (req, res, next) => {
 //   if (!req.session.user) return next();
 //   try {
@@ -43,6 +41,7 @@ app.use(filePathMiddleware);
 
 // ROUTES
 app.use('/feed', feedRoutes);
+app.use(authRoutes);
 
 // ERROR HANDLING
 app.use(serverError);
