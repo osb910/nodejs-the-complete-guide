@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
+import React, {Component, Fragment} from 'react';
+import {Route, Switch, Redirect, withRouter} from 'react-router-dom';
 
 import Layout from './components/Layout/Layout';
 import Backdrop from './components/Backdrop/Backdrop';
@@ -17,11 +17,11 @@ class App extends Component {
   state = {
     showBackdrop: false,
     showMobileNav: false,
-    isAuth: true,
+    isAuth: false,
     token: null,
     userId: null,
     authLoading: false,
-    error: null
+    error: null,
   };
 
   componentDidMount() {
@@ -37,20 +37,20 @@ class App extends Component {
     const userId = localStorage.getItem('userId');
     const remainingMilliseconds =
       new Date(expiryDate).getTime() - new Date().getTime();
-    this.setState({ isAuth: true, token: token, userId: userId });
+    this.setState({isAuth: true, token: token, userId: userId});
     this.setAutoLogout(remainingMilliseconds);
   }
 
   mobileNavHandler = isOpen => {
-    this.setState({ showMobileNav: isOpen, showBackdrop: isOpen });
+    this.setState({showMobileNav: isOpen, showBackdrop: isOpen});
   };
 
   backdropClickHandler = () => {
-    this.setState({ showBackdrop: false, showMobileNav: false, error: null });
+    this.setState({showBackdrop: false, showMobileNav: false, error: null});
   };
 
   logoutHandler = () => {
-    this.setState({ isAuth: false, token: null });
+    this.setState({isAuth: false, token: null});
     localStorage.removeItem('token');
     localStorage.removeItem('expiryDate');
     localStorage.removeItem('userId');
@@ -58,8 +58,17 @@ class App extends Component {
 
   loginHandler = (event, authData) => {
     event.preventDefault();
-    this.setState({ authLoading: true });
-    fetch('URL')
+    this.setState({authLoading: true});
+    fetch('http://localhost:8080/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: authData.email,
+        password: authData.password,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
       .then(res => {
         if (res.status === 422) {
           throw new Error('Validation failed.');
@@ -76,7 +85,7 @@ class App extends Component {
           isAuth: true,
           token: resData.token,
           authLoading: false,
-          userId: resData.userId
+          userId: resData.userId,
         });
         localStorage.setItem('token', resData.token);
         localStorage.setItem('userId', resData.userId);
@@ -92,15 +101,26 @@ class App extends Component {
         this.setState({
           isAuth: false,
           authLoading: false,
-          error: err
+          error: err,
         });
       });
   };
 
   signupHandler = (event, authData) => {
     event.preventDefault();
-    this.setState({ authLoading: true });
-    fetch('URL')
+    this.setState({authLoading: true});
+    fetch('http://localhost:8080/auth/signup', {
+      method: 'PUT',
+      body: JSON.stringify({
+        email: authData.signupForm.email.value,
+        password: authData.signupForm.password.value,
+        name: authData.signupForm.name.value,
+        // status: authData.signupForm.status.value
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
       .then(res => {
         if (res.status === 422) {
           throw new Error(
@@ -115,7 +135,7 @@ class App extends Component {
       })
       .then(resData => {
         console.log(resData);
-        this.setState({ isAuth: false, authLoading: false });
+        this.setState({isAuth: false, authLoading: false});
         this.props.history.replace('/');
       })
       .catch(err => {
@@ -123,7 +143,7 @@ class App extends Component {
         this.setState({
           isAuth: false,
           authLoading: false,
-          error: err
+          error: err,
         });
       });
   };
@@ -135,14 +155,14 @@ class App extends Component {
   };
 
   errorHandler = () => {
-    this.setState({ error: null });
+    this.setState({error: null});
   };
 
   render() {
     let routes = (
       <Switch>
         <Route
-          path="/"
+          path='/'
           exact
           render={props => (
             <LoginPage
@@ -153,7 +173,7 @@ class App extends Component {
           )}
         />
         <Route
-          path="/signup"
+          path='/signup'
           exact
           render={props => (
             <SignupPage
@@ -163,21 +183,21 @@ class App extends Component {
             />
           )}
         />
-        <Redirect to="/" />
+        <Redirect to='/' />
       </Switch>
     );
     if (this.state.isAuth) {
       routes = (
         <Switch>
           <Route
-            path="/"
+            path='/'
             exact
             render={props => (
               <FeedPage userId={this.state.userId} token={this.state.token} />
             )}
           />
           <Route
-            path="/:postId"
+            path='/:postId'
             render={props => (
               <SinglePostPage
                 {...props}
@@ -186,7 +206,7 @@ class App extends Component {
               />
             )}
           />
-          <Redirect to="/" />
+          <Redirect to='/' />
         </Switch>
       );
     }
