@@ -11,9 +11,10 @@ import {
 import {
   imgUploadMiddleware,
   filePathMiddleware,
+  compressionMiddleware,
 } from './middleware/file.middleware.js';
 import {serverError} from './middleware/error.middleware.js';
-import {mongoUri, mongoConnect} from './utils/database.js';
+import {mongoConnect} from './utils/database.js';
 import feedRoutes from './entities/feed/feed.routes.js';
 import authRoutes from './entities/user/auth.routes.js';
 
@@ -22,6 +23,7 @@ const app = express();
 // MIDDLEWARE
 app.use(helmetMiddleware);
 app.use(corsMiddleware);
+app.use(compressionMiddleware);
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());

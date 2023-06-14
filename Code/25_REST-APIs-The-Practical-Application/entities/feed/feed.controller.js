@@ -20,6 +20,7 @@ const createPost = async (req, res, next) => {
   const {title, content} = req.body;
   const imageUrl = req.file.path;
   const post = new Post({title, content, imageUrl, creator: req.userId});
+  console.log({post});
   try {
     const result = await post.save();
     await User.findByIdAndUpdate(req.userId, {$push: {posts: result._id}});

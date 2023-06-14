@@ -1,8 +1,8 @@
 .modal {
   position: fixed;
   width: 90%;
-  left: 5%;
-  top: 20vh;
+  inset-inline-start: 5%;
+  inset-block-start: 5vh;
   background: white;
   border-radius: 5px;
   z-index: 200;
@@ -20,7 +20,7 @@
 }
 
 .modal__content {
-  padding: 1rem;
+  padding: 0 1rem;
 }
 
 .modal__actions {
