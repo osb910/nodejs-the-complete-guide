@@ -17,5 +17,7 @@ jspm_packages/
 .env.production.local
 .env.local
 
+*.key
+
 data/
 images/
