@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <%- include('../components/head.ejs') %>
+    <link rel='stylesheet' href='/css/forms.css' />
+</head>
+<body>
+    <%- include('../components/nav.ejs') %>
+    <main>
+        <% if (errorMessage) { %>
+            <p class='user-message error-message'><%= errorMessage %></p>
+        <% } %>
+        <form action='/reset' method='POST' class='auth-form'>
+            <p class='form-control'>
+                <label for='email'>E-Mail</label>
+                <input
+                        type='email'
+                        name='email'
+                        id='email'
+                        dir='auto'
+                />
+            </p>
+            <button type='submit'>Reset Password</button>
+        </form>
+    </main>
+    <script src='/js/main.js'></script>
+</body>
+</html>

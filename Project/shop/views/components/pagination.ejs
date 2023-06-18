@@ -1,0 +1,32 @@
+<section class='pagination'>
+  <ul class='pagination-links'>
+      <% if (currentPage > 1) { %>
+        <li><a href='?page=1' class='pagination-link'>1</a></li>
+      <% } %>
+      <% if (currentPage > 3) { %>
+        <span>...</span>
+      <% } %>
+      <% if (currentPage > 2) { %>
+        <li><a href='?page=<%= currentPage - 1 %>' class='pagination-link'><%= currentPage - 1 %></a></li>
+      <% } %>
+      <li>
+        <a href='<%= currentPage > 1 ? `?page=${currentPage}` : '' %>' class='pagination-link active'>
+          <%= currentPage %>
+        </a>
+      </li>
+      <% if (currentPage * limit < productsCount && currentPage < pagesNum - 1) { %>
+        <li><a href='?page=<%= currentPage + 1 %>' class='pagination-link'><%= currentPage + 1 %></a></li>
+      <% } %>
+      <% if (currentPage < pagesNum - 2) { %>
+        <span>...</span>
+      <% } %>
+      <% if (currentPage < pagesNum) { %>
+        <li><a href='?page=<%= pagesNum %>' class='pagination-link'><%= pagesNum %></a></li>
+      <% } %>
+  </ul>
+  <form class='go-to-page'>
+    <label for='page'>Page</label>
+    <input type='number' name='page' id='page' min='1' max='<%= pagesNum %>' value='<%= currentPage %>'>
+    <button type='submit'>Go</button>
+  </form>
+</section>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <%- include('../components/head.ejs') %>
+    <link rel='stylesheet' href='/css/cart.css' />
+  </head>
+  <body>
+    <%- include('../components/nav.ejs') %>
+    <main>
+      <h1>Checkout</h1>
+      <% if (items.length === 0) { %>
+        <p>No products in cart</p>
+      <% } else { %>
+        <p>Total: $<%= totalPrice %></p>
+        <ul class='cart__item-list'>
+          <% items.forEach(({product, quantity}) => { %>
+            <li class='cart__item'>
+              <h1><%= product.title %> (<%= quantity %>)</h1>
+              <img src='<%= product.imageUrl %>' alt='<%= product.title %>' />
+              <p dir='auto'><%= product.description %></p>
+              <p>$<%= product.price %></p>
+            </li>
+          <% }) %>
+        </ul>
+        <section class='centered'>
+          <button id='order-btn' class='btn' data-sessionid='<%= stripeSessionId %>'>Order Now!</button>
+        </section>
+      <% } %>
+    </main>
+    <script src='https://js.stripe.com/v3/'></script>
+    <script src='/js/main.js'></script>
+    <script src='/js/checkout.js'></script>
+  </body>
+</html>
